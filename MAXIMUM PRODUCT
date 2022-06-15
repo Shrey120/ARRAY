@@ -1,0 +1,92 @@
+Given an integer array nums, find a contiguous non-empty subarray within the array that has the largest product, and return the product.
+
+The test cases are generated so that the answer will fit in a 32-bit integer.
+
+A subarray is a contiguous subsequence of the array.
+
+ 
+
+Example 1:
+
+Input: nums = [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+Example 2:
+
+Input: nums = [-2,0,-1]
+Output: 0
+Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+
+
+APPROACH 1: NORMAL APP.
+
+class Solution {
+public:
+int maxProduct(vector<int> &nums) {
+// declared ans to store the final max value till the iteraterd element of the array
+int ans = nums[0];
+// n is the size of the array
+int n = nums.size();
+// imax is the maximum product value till the iteraterd element of the array
+int imax = ans;
+
+    // imin is the minimum product value till the iteraterd element of the array
+    int imin = ans;
+    
+    for(int i=1;i<n;i++) {
+        // If the array element is negative then is multiplied with the max product till now change it to minimum value and min product valu so far to maximum value. Thus swap the max and min value so far 
+        if(nums[i]<0)
+            swap(imax,imin);
+        imax = max(nums[i], imax*nums[i]);
+        imin = min(nums[i], imin*nums[i]);
+        ans = max(ans, imax);
+    }
+    // return the answer
+    return ans;
+}
+};
+
+
+APPROACH 2: DP SOLLUTION
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        // Maximum product subarray always start from 0-index or last-index in case when there is no any zero present in  given array...
+        
+       //  But when we encounter any zero in array we set current_product = 1 here again...        
+        
+        
+        //  case-1 check product from right...
+        
+        int current_product = 1;
+        int max_product = INT_MIN;
+        
+        for(int i=0;i<nums.size();i++){
+            current_product *= nums[i];
+            max_product = max(current_product,max_product);
+            
+            if(current_product==0){
+                current_product = 1;
+            }
+        }
+        
+        //  case-2 check product from left...
+        current_product = 1;
+        
+        for(int i=nums.size()-1;i>=0;i--){
+            current_product *= nums[i];
+            max_product = max(current_product,max_product);
+            
+            if(current_product==0){
+                current_product = 1;
+            }
+        }
+        
+        return max_product;
+        
+        
+        
+        
+    }
+};
